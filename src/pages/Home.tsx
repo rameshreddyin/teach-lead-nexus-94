@@ -55,12 +55,12 @@ const Home = () => {
       let filtered = [...leads];
       
       // Apply status filter
-      if (statusFilter) {
+      if (statusFilter && statusFilter !== 'all') {
         filtered = filtered.filter(lead => lead.status === statusFilter);
       }
       
       // Apply source filter
-      if (sourceFilter) {
+      if (sourceFilter && sourceFilter !== 'all') {
         filtered = filtered.filter(lead => lead.source === sourceFilter);
       }
       

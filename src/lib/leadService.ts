@@ -1,4 +1,3 @@
-
 import { Lead, LeadFormData, LeadStatus, LeadFilter } from './types';
 
 // In a real app, this would be an API call to your backend
@@ -21,6 +20,159 @@ const getLeads = (): Lead[] => {
 const saveLeads = (leads: Lead[]): void => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
 };
+
+// Initialize with dummy data if storage is empty
+const initializeDummyData = () => {
+  if (getLeads().length === 0) {
+    const dummyLeads: Lead[] = [
+      {
+        id: 'lead1',
+        studentName: 'Alice Johnson',
+        parentName: 'Sarah Johnson',
+        contactNumber: '+1234567890',
+        class: 'Grade 5',
+        source: 'parent_referral',
+        status: 'new',
+        followUpDate: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
+        notes: 'Interested in after-school programs',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'default-user'
+      },
+      {
+        id: 'lead2',
+        studentName: 'Tom Smith',
+        parentName: 'Mary Smith',
+        contactNumber: '+1234567891',
+        class: 'Grade 3',
+        source: 'school_event',
+        status: 'contacted',
+        followUpDate: new Date(Date.now() + 172800000).toISOString(), // Day after tomorrow
+        notes: 'Met at science fair',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'default-user'
+      },
+      {
+        id: 'lead3',
+        studentName: 'Michael Brown',
+        parentName: 'John Brown',
+        contactNumber: '+1234567892',
+        class: 'Grade 4',
+        source: 'website',
+        status: 'follow_up',
+        followUpDate: new Date().toISOString(), // Today
+        notes: 'Questions about curriculum',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'default-user'
+      },
+      {
+        id: 'lead4',
+        studentName: 'Emily Davis',
+        parentName: 'Lisa Davis',
+        contactNumber: '+1234567893',
+        class: 'Grade 6',
+        source: 'social_media',
+        status: 'converted',
+        followUpDate: new Date(Date.now() - 86400000).toISOString(), // Yesterday
+        notes: 'Registration completed',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'default-user'
+      },
+      {
+        id: 'lead5',
+        studentName: 'David Wilson',
+        parentName: 'James Wilson',
+        contactNumber: '+1234567894',
+        class: 'Grade 2',
+        source: 'community',
+        status: 'new',
+        followUpDate: new Date(Date.now() + 259200000).toISOString(), // 3 days from now
+        notes: 'Interested in music program',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'default-user'
+      },
+      {
+        id: 'lead6',
+        studentName: 'Sofia Martinez',
+        parentName: 'Ana Martinez',
+        contactNumber: '+1234567895',
+        class: 'Grade 1',
+        source: 'parent_referral',
+        status: 'follow_up',
+        followUpDate: new Date().toISOString(), // Today
+        notes: 'Recommended by Johnson family',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'default-user'
+      },
+      {
+        id: 'lead7',
+        studentName: 'Lucas Taylor',
+        parentName: 'Emma Taylor',
+        contactNumber: '+1234567896',
+        class: 'Grade 4',
+        source: 'school_event',
+        status: 'closed',
+        followUpDate: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+        notes: 'Decided on another school',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'default-user'
+      },
+      {
+        id: 'lead8',
+        studentName: 'Oliver Anderson',
+        parentName: 'Robert Anderson',
+        contactNumber: '+1234567897',
+        class: 'Grade 3',
+        source: 'website',
+        status: 'contacted',
+        followUpDate: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
+        notes: 'Following up on website inquiry',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'default-user'
+      },
+      {
+        id: 'lead9',
+        studentName: 'Ava Thompson',
+        parentName: 'Michael Thompson',
+        contactNumber: '+1234567898',
+        class: 'Grade 5',
+        source: 'social_media',
+        status: 'new',
+        followUpDate: new Date(Date.now() + 345600000).toISOString(), // 4 days from now
+        notes: 'Facebook advertisement response',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'default-user'
+      },
+      {
+        id: 'lead10',
+        studentName: 'Ethan Lee',
+        parentName: 'Jennifer Lee',
+        contactNumber: '+1234567899',
+        class: 'Grade 6',
+        source: 'community',
+        status: 'converted',
+        followUpDate: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
+        notes: 'Successfully enrolled',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'default-user'
+      }
+    ];
+
+    saveLeads(dummyLeads);
+  }
+};
+
+// Initialize dummy data
+initializeDummyData();
 
 // Get all leads for a user
 export const getUserLeads = (userId: string): Lead[] => {
