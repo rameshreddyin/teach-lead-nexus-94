@@ -22,8 +22,16 @@ const saveLeads = (leads: Lead[]): void => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
 };
 
+// Clear any existing data (for testing purposes)
+const clearExistingData = () => {
+  localStorage.removeItem(STORAGE_KEY);
+};
+
 // Initialize with dummy data if storage is empty
 const initializeDummyData = () => {
+  // First clear any existing data to ensure fresh dummy data
+  clearExistingData();
+  
   if (getLeads().length === 0) {
     const dummyLeads: Lead[] = [
       {
@@ -189,6 +197,7 @@ const initializeDummyData = () => {
     ];
 
     saveLeads(dummyLeads);
+    console.log('Dummy data initialized:', dummyLeads.length, 'leads');
   }
 };
 
@@ -199,7 +208,13 @@ initializeDummyData();
 export const getUserLeads = (userId: string): Lead[] => {
   // For demo purposes, if userId is undefined or null, use the default user ID
   const userIdToUse = userId || DEFAULT_USER_ID;
-  return getLeads().filter(lead => lead.createdBy === userIdToUse);
+  const allLeads = getLeads();
+  console.log(`Getting leads for user: ${userIdToUse}, found ${allLeads.length} total leads`);
+  
+  const userLeads = allLeads.filter(lead => lead.createdBy === userIdToUse);
+  console.log(`Filtered to ${userLeads.length} leads for user ${userIdToUse}`);
+  
+  return userLeads;
 };
 
 // Get a single lead by ID

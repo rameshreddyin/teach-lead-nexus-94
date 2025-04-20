@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/authContext';
@@ -21,21 +22,30 @@ const Home = () => {
   const [sourceFilter, setSourceFilter] = useState<LeadSource | 'all'>('all');
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log('Home component rendered, user:', user);
+
   // Load leads on component mount
   useEffect(() => {
+    console.log('useEffect triggered, loading leads');
     loadLeads();
-  }, [user]);
+  }, []);
 
   // Load leads from the service
   const loadLeads = () => {
+    console.log('loadLeads function called');
     setIsLoading(true);
     
-    // Get all leads, user may be undefined but we handle that in leadService
-    const allLeads = getUserLeads(user?.id || '');
+    // Get all leads, using a default user ID if no user is logged in
+    const userId = user?.id || '';
+    console.log('Using user ID:', userId || 'default');
+    
+    const allLeads = getUserLeads(userId);
+    console.log('Loaded leads:', allLeads.length);
     setLeads(allLeads);
     
     // Get today's follow-up leads
-    const todayFollowUps = getFollowUpLeads(user?.id || '');
+    const todayFollowUps = getFollowUpLeads(userId);
+    console.log('Today\'s follow-ups:', todayFollowUps.length);
     setFollowUpLeads(todayFollowUps);
     
     // Initialize filtered leads
@@ -46,17 +56,21 @@ const Home = () => {
 
   // Apply filters when they change
   useEffect(() => {
+    console.log('Filters changed, applying filters');
     if (leads.length > 0) {
       let filtered = [...leads];
+      console.log('Starting with', filtered.length, 'leads');
       
       // Apply status filter
       if (statusFilter && statusFilter !== 'all') {
         filtered = filtered.filter(lead => lead.status === statusFilter);
+        console.log('After status filter:', filtered.length, 'leads');
       }
       
       // Apply source filter
       if (sourceFilter && sourceFilter !== 'all') {
         filtered = filtered.filter(lead => lead.source === sourceFilter);
+        console.log('After source filter:', filtered.length, 'leads');
       }
       
       // Apply search query
@@ -67,6 +81,7 @@ const Home = () => {
             lead.studentName.toLowerCase().includes(query) || 
             lead.parentName.toLowerCase().includes(query)
         );
+        console.log('After search filter:', filtered.length, 'leads');
       }
       
       setFilteredLeads(filtered);
@@ -115,7 +130,7 @@ const Home = () => {
             <div className="flex gap-2">
               <Select 
                 value={statusFilter} 
-                onValueChange={(value: LeadStatus | 'all') => setStatusFilter(value)}
+                onValueChange={(value) => setStatusFilter(value as LeadStatus | 'all')}
               >
                 <SelectTrigger className="flex-1">
                   <SelectValue placeholder="Status" />
@@ -132,7 +147,7 @@ const Home = () => {
               
               <Select 
                 value={sourceFilter} 
-                onValueChange={(value: LeadSource | 'all') => setSourceFilter(value)}
+                onValueChange={(value) => setSourceFilter(value as LeadSource | 'all')}
               >
                 <SelectTrigger className="flex-1">
                   <SelectValue placeholder="Source" />
