@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/authContext';
 import { Button } from '@/components/ui/button';
@@ -9,8 +9,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('teacher@school.edu');
+  const [password, setPassword] = useState('welcome123');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -33,6 +33,11 @@ const Login = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleQuickLogin = () => {
+    setEmail('teacher@school.edu');
+    setPassword('welcome123');
   };
 
   return (
@@ -76,13 +81,21 @@ const Login = () => {
               />
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col space-y-2">
             <Button 
               type="submit" 
               className="w-full h-12 text-base bg-app-black"
               disabled={isLoading}
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
+            </Button>
+            <Button 
+              type="button" 
+              variant="secondary" 
+              className="w-full h-12 text-base"
+              onClick={handleQuickLogin}
+            >
+              Quick Login
             </Button>
           </CardFooter>
         </form>
@@ -92,3 +105,4 @@ const Login = () => {
 };
 
 export default Login;
+
