@@ -1,10 +1,10 @@
-
 import { Lead, LeadFormData, LeadStatus, LeadFilter } from './types';
 
 // In a real app, this would be an API call to your backend
 // For this demo, we'll use localStorage to persist data
 
 const STORAGE_KEY = 'teacher_leads';
+const DEFAULT_USER_ID = 'default-user'; // Add a constant for default user ID
 
 // Generate a unique ID 
 const generateId = (): string => {
@@ -40,7 +40,7 @@ const initializeDummyData = () => {
         notes: 'Interested in after-school programs',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        createdBy: 'default-user'
+        createdBy: DEFAULT_USER_ID
       },
       {
         id: 'lead2',
@@ -56,7 +56,7 @@ const initializeDummyData = () => {
         notes: 'Met at science fair',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        createdBy: 'default-user'
+        createdBy: DEFAULT_USER_ID
       },
       {
         id: 'lead3',
@@ -72,7 +72,7 @@ const initializeDummyData = () => {
         notes: 'Questions about curriculum',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        createdBy: 'default-user'
+        createdBy: DEFAULT_USER_ID
       },
       {
         id: 'lead4',
@@ -88,7 +88,7 @@ const initializeDummyData = () => {
         notes: 'Registration completed',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        createdBy: 'default-user'
+        createdBy: DEFAULT_USER_ID
       },
       {
         id: 'lead5',
@@ -104,7 +104,7 @@ const initializeDummyData = () => {
         notes: 'Interested in music program',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        createdBy: 'default-user'
+        createdBy: DEFAULT_USER_ID
       },
       {
         id: 'lead6',
@@ -120,7 +120,7 @@ const initializeDummyData = () => {
         notes: 'Recommended by Johnson family',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        createdBy: 'default-user'
+        createdBy: DEFAULT_USER_ID
       },
       {
         id: 'lead7',
@@ -136,7 +136,7 @@ const initializeDummyData = () => {
         notes: 'Decided on another school',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        createdBy: 'default-user'
+        createdBy: DEFAULT_USER_ID
       },
       {
         id: 'lead8',
@@ -152,7 +152,7 @@ const initializeDummyData = () => {
         notes: 'Following up on website inquiry',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        createdBy: 'default-user'
+        createdBy: DEFAULT_USER_ID
       },
       {
         id: 'lead9',
@@ -168,7 +168,7 @@ const initializeDummyData = () => {
         notes: 'Facebook advertisement response',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        createdBy: 'default-user'
+        createdBy: DEFAULT_USER_ID
       },
       {
         id: 'lead10',
@@ -184,7 +184,7 @@ const initializeDummyData = () => {
         notes: 'Successfully enrolled',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        createdBy: 'default-user'
+        createdBy: DEFAULT_USER_ID
       }
     ];
 
@@ -197,7 +197,9 @@ initializeDummyData();
 
 // Get all leads for a user
 export const getUserLeads = (userId: string): Lead[] => {
-  return getLeads().filter(lead => lead.createdBy === userId);
+  // For demo purposes, if userId is undefined or null, use the default user ID
+  const userIdToUse = userId || DEFAULT_USER_ID;
+  return getLeads().filter(lead => lead.createdBy === userIdToUse);
 };
 
 // Get a single lead by ID

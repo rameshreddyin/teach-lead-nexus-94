@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/authContext';
@@ -24,27 +23,23 @@ const Home = () => {
 
   // Load leads on component mount
   useEffect(() => {
-    if (user) {
-      loadLeads();
-    }
+    loadLeads();
   }, [user]);
 
   // Load leads from the service
   const loadLeads = () => {
     setIsLoading(true);
     
-    if (user) {
-      // Get all leads
-      const allLeads = getUserLeads(user.id);
-      setLeads(allLeads);
-      
-      // Get today's follow-up leads
-      const todayFollowUps = getFollowUpLeads(user.id);
-      setFollowUpLeads(todayFollowUps);
-      
-      // Initialize filtered leads
-      setFilteredLeads(allLeads);
-    }
+    // Get all leads, user may be undefined but we handle that in leadService
+    const allLeads = getUserLeads(user?.id || '');
+    setLeads(allLeads);
+    
+    // Get today's follow-up leads
+    const todayFollowUps = getFollowUpLeads(user?.id || '');
+    setFollowUpLeads(todayFollowUps);
+    
+    // Initialize filtered leads
+    setFilteredLeads(allLeads);
     
     setIsLoading(false);
   };
