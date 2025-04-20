@@ -1,3 +1,4 @@
+
 import { Lead, LeadFormData, LeadStatus, LeadFilter } from './types';
 
 // In a real app, this would be an API call to your backend
@@ -30,7 +31,9 @@ const initializeDummyData = () => {
         studentName: 'Alice Johnson',
         parentName: 'Sarah Johnson',
         contactNumber: '+1234567890',
+        contactEmail: 'sarah.johnson@example.com',
         class: 'Grade 5',
+        street: '123 Oak Street, Anytown',
         source: 'parent_referral',
         status: 'new',
         followUpDate: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
@@ -44,7 +47,9 @@ const initializeDummyData = () => {
         studentName: 'Tom Smith',
         parentName: 'Mary Smith',
         contactNumber: '+1234567891',
+        contactEmail: 'mary.smith@example.com',
         class: 'Grade 3',
+        street: '456 Pine Avenue, Springfield',
         source: 'school_event',
         status: 'contacted',
         followUpDate: new Date(Date.now() + 172800000).toISOString(), // Day after tomorrow
@@ -58,7 +63,9 @@ const initializeDummyData = () => {
         studentName: 'Michael Brown',
         parentName: 'John Brown',
         contactNumber: '+1234567892',
+        contactEmail: 'john.brown@example.com',
         class: 'Grade 4',
+        street: '789 Maple Road, Westville',
         source: 'website',
         status: 'follow_up',
         followUpDate: new Date().toISOString(), // Today
@@ -72,7 +79,9 @@ const initializeDummyData = () => {
         studentName: 'Emily Davis',
         parentName: 'Lisa Davis',
         contactNumber: '+1234567893',
+        contactEmail: 'lisa.davis@example.com',
         class: 'Grade 6',
+        street: '101 Cedar Lane, Easton',
         source: 'social_media',
         status: 'converted',
         followUpDate: new Date(Date.now() - 86400000).toISOString(), // Yesterday
@@ -86,7 +95,9 @@ const initializeDummyData = () => {
         studentName: 'David Wilson',
         parentName: 'James Wilson',
         contactNumber: '+1234567894',
+        contactEmail: 'james.wilson@example.com',
         class: 'Grade 2',
+        street: '202 Birch Boulevard, Northtown',
         source: 'community',
         status: 'new',
         followUpDate: new Date(Date.now() + 259200000).toISOString(), // 3 days from now
@@ -100,7 +111,9 @@ const initializeDummyData = () => {
         studentName: 'Sofia Martinez',
         parentName: 'Ana Martinez',
         contactNumber: '+1234567895',
+        contactEmail: 'ana.martinez@example.com',
         class: 'Grade 1',
+        street: '303 Willow Way, Southville',
         source: 'parent_referral',
         status: 'follow_up',
         followUpDate: new Date().toISOString(), // Today
@@ -114,7 +127,9 @@ const initializeDummyData = () => {
         studentName: 'Lucas Taylor',
         parentName: 'Emma Taylor',
         contactNumber: '+1234567896',
+        contactEmail: 'emma.taylor@example.com',
         class: 'Grade 4',
+        street: '404 Aspen Court, Eastwood',
         source: 'school_event',
         status: 'closed',
         followUpDate: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
@@ -128,7 +143,9 @@ const initializeDummyData = () => {
         studentName: 'Oliver Anderson',
         parentName: 'Robert Anderson',
         contactNumber: '+1234567897',
+        contactEmail: 'robert.anderson@example.com',
         class: 'Grade 3',
+        street: '505 Redwood Drive, Westend',
         source: 'website',
         status: 'contacted',
         followUpDate: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
@@ -142,7 +159,9 @@ const initializeDummyData = () => {
         studentName: 'Ava Thompson',
         parentName: 'Michael Thompson',
         contactNumber: '+1234567898',
+        contactEmail: 'michael.thompson@example.com',
         class: 'Grade 5',
+        street: '606 Spruce Street, Northpoint',
         source: 'social_media',
         status: 'new',
         followUpDate: new Date(Date.now() + 345600000).toISOString(), // 4 days from now
@@ -156,7 +175,9 @@ const initializeDummyData = () => {
         studentName: 'Ethan Lee',
         parentName: 'Jennifer Lee',
         contactNumber: '+1234567899',
+        contactEmail: 'jennifer.lee@example.com',
         class: 'Grade 6',
+        street: '707 Fir Avenue, Southpoint',
         source: 'community',
         status: 'converted',
         followUpDate: new Date(Date.now() - 259200000).toISOString(), // 3 days ago

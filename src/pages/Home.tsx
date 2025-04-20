@@ -18,8 +18,8 @@ const Home = () => {
   const [followUpLeads, setFollowUpLeads] = useState<Lead[]>([]);
   const [filteredLeads, setFilteredLeads] = useState<Lead[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<LeadStatus | ''>('');
-  const [sourceFilter, setSourceFilter] = useState<LeadSource | ''>('');
+  const [statusFilter, setStatusFilter] = useState<LeadStatus | 'all'>('all');
+  const [sourceFilter, setSourceFilter] = useState<LeadSource | 'all'>('all');
   const [isLoading, setIsLoading] = useState(true);
 
   // Load leads on component mount
