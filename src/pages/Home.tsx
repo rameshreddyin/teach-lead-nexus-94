@@ -126,7 +126,7 @@ const Home = () => {
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Statuses</SelectItem>
+                  <SelectItem value="all">All Statuses</SelectItem>
                   <SelectItem value="new">New</SelectItem>
                   <SelectItem value="contacted">Contacted</SelectItem>
                   <SelectItem value="follow_up">Follow Up</SelectItem>
@@ -143,7 +143,7 @@ const Home = () => {
                   <SelectValue placeholder="Source" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Sources</SelectItem>
+                  <SelectItem value="all">All Sources</SelectItem>
                   <SelectItem value="parent_referral">Parent Referral</SelectItem>
                   <SelectItem value="school_event">School Event</SelectItem>
                   <SelectItem value="website">Website</SelectItem>
