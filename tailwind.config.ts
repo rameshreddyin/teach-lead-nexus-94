@@ -12,8 +12,12 @@ export default {
 	theme: {
 		container: {
 			center: true,
-			padding: '2rem',
+			padding: '1rem',
 			screens: {
+				'sm': '640px',
+				'md': '768px',
+				'lg': '1024px',
+				'xl': '1280px',
 				'2xl': '1400px'
 			}
 		},
@@ -61,6 +65,19 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom colors for our Lead Management System
+				app: {
+					black: '#222222',
+					darkGray: '#333333',
+					mediumGray: '#555555',
+					gray: '#888888',
+					lightGray: '#F1F1F1',
+					white: '#FFFFFF',
+					success: '#4CAF50',
+					pending: '#FFC107',
+					followup: '#2196F3',
+					closed: '#9E9E9E',
 				}
 			},
 			borderRadius: {

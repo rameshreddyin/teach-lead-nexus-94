@@ -4,98 +4,123 @@
 
 @layer base {
   :root {
+    /* Clean minimalist theme with black, white and gray */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 13%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 13%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 13%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 0% 13%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 13%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 13%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 13%;
 
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --radius: 0.75rem;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
 
+  html, body {
+    @apply bg-background text-foreground touch-manipulation overscroll-none;
+    -webkit-tap-highlight-color: transparent;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply text-sm sm:text-base;
+    font-feature-settings: "kern";
+  }
+
+  #root {
+    @apply min-h-screen max-w-md mx-auto relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a, button {
+    @apply select-none;
+  }
+
+  /* Mobile-optimized scrolling and touch interactions */
+  .app-container {
+    @apply flex flex-col;
+    min-height: 100svh;
+    width: 100%;
+  }
+
+  .main-content {
+    @apply flex-1 relative;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Status Tags */
+  .status-new {
+    @apply bg-app-black text-app-white;
+  }
+  .status-contacted {
+    @apply bg-app-pending text-app-black;
+  }
+  .status-followup {
+    @apply bg-app-followup text-app-white;
+  }
+  .status-converted {
+    @apply bg-app-success text-app-white;
+  }
+  .status-closed {
+    @apply bg-app-closed text-app-white;
+  }
+
+  /* Mobile Form Optimizations */
+  .mobile-form input, 
+  .mobile-form select, 
+  .mobile-form textarea {
+    @apply text-base py-3;
+  }
+
+  /* Custom Fab */
+  .fab {
+    @apply fixed bottom-6 right-6 rounded-full bg-app-black text-app-white shadow-lg z-10
+          w-14 h-14 flex items-center justify-center text-2xl;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .fab:active {
+    @apply transform scale-95;
+  }
+
+  /* Card Swipe Animations */
+  .swipe-action {
+    @apply absolute inset-y-0 flex items-center justify-center px-4;
+    transition: opacity 0.2s;
+  }
+  
+  .swipe-left {
+    @apply left-0 bg-app-success text-app-white;
+  }
+  
+  .swipe-right {
+    @apply right-0 bg-app-pending text-app-black;
   }
 }

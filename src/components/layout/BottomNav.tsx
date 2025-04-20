@@ -1,0 +1,46 @@
+
+import { useLocation, useNavigate } from 'react-router-dom';
+import { HomeIcon, User, PlusSquare } from 'lucide-react';
+
+const BottomNav = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 bg-app-white border-t border-app-lightGray z-10">
+      <div className="flex items-center justify-around h-16">
+        <button
+          onClick={() => navigate('/')}
+          className={`flex flex-col items-center justify-center w-1/3 py-1 ${
+            location.pathname === '/' ? 'text-app-black' : 'text-app-mediumGray'
+          }`}
+        >
+          <HomeIcon className="h-5 w-5 mb-1" />
+          <span className="text-xs">Home</span>
+        </button>
+        
+        <button
+          onClick={() => navigate('/add-lead')}
+          className={`flex flex-col items-center justify-center w-1/3 py-1 ${
+            location.pathname === '/add-lead' ? 'text-app-black' : 'text-app-mediumGray'
+          }`}
+        >
+          <PlusSquare className="h-5 w-5 mb-1" />
+          <span className="text-xs">Add Lead</span>
+        </button>
+        
+        <button
+          onClick={() => navigate('/profile')}
+          className={`flex flex-col items-center justify-center w-1/3 py-1 ${
+            location.pathname === '/profile' ? 'text-app-black' : 'text-app-mediumGray'
+          }`}
+        >
+          <User className="h-5 w-5 mb-1" />
+          <span className="text-xs">Profile</span>
+        </button>
+      </div>
+    </nav>
+  );
+};
+
+export default BottomNav;
