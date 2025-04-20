@@ -120,7 +120,7 @@ const Home = () => {
             <div className="flex gap-2">
               <Select 
                 value={statusFilter} 
-                onValueChange={(value) => setStatusFilter(value as LeadStatus | '')}
+                onValueChange={(value: LeadStatus | 'all') => setStatusFilter(value)}
               >
                 <SelectTrigger className="flex-1">
                   <SelectValue placeholder="Status" />
@@ -137,7 +137,7 @@ const Home = () => {
               
               <Select 
                 value={sourceFilter} 
-                onValueChange={(value) => setSourceFilter(value as LeadSource | '')}
+                onValueChange={(value: LeadSource | 'all') => setSourceFilter(value)}
               >
                 <SelectTrigger className="flex-1">
                   <SelectValue placeholder="Source" />

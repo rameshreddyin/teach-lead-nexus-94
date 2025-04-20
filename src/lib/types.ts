@@ -30,8 +30,8 @@ export type LeadFormData = Omit<Lead, 'id' | 'createdAt' | 'updatedAt' | 'create
 
 // Data for lead filter
 export interface LeadFilter {
-  status?: LeadStatus;
-  source?: LeadSource;
+  status?: LeadStatus | 'all';
+  source?: LeadSource | 'all';
   searchQuery?: string;
   fromDate?: string;
   toDate?: string;
