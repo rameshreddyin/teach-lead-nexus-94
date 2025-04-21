@@ -41,19 +41,28 @@ const Profile = () => {
         <CardContent className="py-0">
           <ul className="divide-y divide-app-lightGray">
             <li className="py-3">
-              <button className="w-full flex items-center justify-between">
+              <button 
+                className="w-full flex items-center justify-between"
+                onClick={() => navigate('/profile/edit')}
+              >
                 <span>Edit Profile</span>
                 <Settings className="h-4 w-4 text-app-mediumGray" />
               </button>
             </li>
             <li className="py-3">
-              <button className="w-full flex items-center justify-between">
+              <button 
+                className="w-full flex items-center justify-between"
+                onClick={() => navigate('/profile/notifications')}
+              >
                 <span>Notification Settings</span>
                 <Settings className="h-4 w-4 text-app-mediumGray" />
               </button>
             </li>
             <li className="py-3">
-              <button className="w-full flex items-center justify-between">
+              <button 
+                className="w-full flex items-center justify-between"
+                onClick={() => navigate('/profile/change-password')}
+              >
                 <span>Change Password</span>
                 <Settings className="h-4 w-4 text-app-mediumGray" />
               </button>
@@ -69,17 +78,26 @@ const Profile = () => {
         <CardContent className="py-0">
           <ul className="divide-y divide-app-lightGray">
             <li className="py-3">
-              <button className="w-full flex items-center justify-between">
+              <button 
+                className="w-full flex items-center justify-between"
+                onClick={() => navigate('/profile/help')}
+              >
                 <span>Help & Support</span>
               </button>
             </li>
             <li className="py-3">
-              <button className="w-full flex items-center justify-between">
+              <button 
+                className="w-full flex items-center justify-between"
+                onClick={() => navigate('/profile/terms')}
+              >
                 <span>Terms of Service</span>
               </button>
             </li>
             <li className="py-3">
-              <button className="w-full flex items-center justify-between">
+              <button 
+                className="w-full flex items-center justify-between"
+                onClick={() => navigate('/profile/privacy')}
+              >
                 <span>Privacy Policy</span>
               </button>
             </li>

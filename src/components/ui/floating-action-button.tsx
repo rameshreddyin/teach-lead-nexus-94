@@ -21,8 +21,8 @@ export function FloatingActionButton({
       onClick={onClick}
       className={cn(
         "fab",
-        // Always stick to proper bottom-right with big enough gap for bottom navs
-        "fixed right-6 bottom-6 md:right-10 md:bottom-8",
+        // Adjusted bottom position to prevent overlap with bottom nav
+        "fixed right-6 bottom-20 md:right-10 md:bottom-8",
         "rounded-full bg-app-black text-app-white shadow-lg",
         "w-14 h-14 flex items-center justify-center text-2xl",
         "transition-all hover:scale-105 active:scale-95",

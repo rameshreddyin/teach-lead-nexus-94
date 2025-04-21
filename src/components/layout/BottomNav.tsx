@@ -6,6 +6,11 @@ const BottomNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
+  // Helper function to check if we're on a profile-related page
+  const isProfileRoute = () => {
+    return location.pathname === '/profile' || location.pathname.startsWith('/profile/');
+  };
+  
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-app-white border-t border-app-lightGray z-10">
       <div className="flex items-center justify-around h-16">
@@ -32,7 +37,7 @@ const BottomNav = () => {
         <button
           onClick={() => navigate('/profile')}
           className={`flex flex-col items-center justify-center w-1/3 py-1 ${
-            location.pathname === '/profile' ? 'text-app-black' : 'text-app-mediumGray'
+            isProfileRoute() ? 'text-app-black' : 'text-app-mediumGray'
           }`}
         >
           <User className="h-5 w-5 mb-1" />
