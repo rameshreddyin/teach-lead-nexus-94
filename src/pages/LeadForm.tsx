@@ -282,57 +282,56 @@ const LeadForm = () => {
             <MapPin className="h-5 w-5 text-app-black" />
             <h3 className="text-base font-medium">Location Details</h3>
           </div>
-          
-          <div className="space-y-3 border border-app-lightGray rounded-md p-3 bg-gray-50">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border border-app-lightGray rounded-md p-4 bg-gray-50">
             <div className="space-y-2">
-              <Label htmlFor="street">Street Address *</Label>
+              <Label htmlFor="pincode">Pin Code *</Label>
+              <Input
+                id="pincode"
+                name="pincode"
+                value={formData.pincode}
+                onChange={handleChange}
+                placeholder="Postal Code (e.g. 560034)"
+                autoComplete="postal-code"
+                inputMode="numeric"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="street">Street/Flat *</Label>
               <Input
                 id="street"
                 name="street"
                 value={formData.street}
                 onChange={handleChange}
                 placeholder="House/Flat No., Street Name"
+                autoComplete="street-address"
                 required
               />
             </div>
-            
-            <div className="space-y-2">
+            <div className="space-y-2 md:col-span-2">
               <Label htmlFor="locality">Locality/Area</Label>
               <Input
                 id="locality"
                 name="locality"
                 value={formData.locality}
                 onChange={handleChange}
-                placeholder="Neighborhood, Area"
+                placeholder="Neighborhood or Area (e.g. HSR Layout)"
+                autoComplete="address-line2"
               />
             </div>
-            
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2">
-                <Label htmlFor="city">City *</Label>
-                <Input
-                  id="city"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  placeholder="City"
-                  required
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="pincode">Pin Code *</Label>
-                <Input
-                  id="pincode"
-                  name="pincode"
-                  value={formData.pincode}
-                  onChange={handleChange}
-                  placeholder="Postal Code"
-                  required
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="city">City *</Label>
+              <Input
+                id="city"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                placeholder="City"
+                autoComplete="address-level2"
+                required
+              />
             </div>
-            
             <div className="space-y-2">
               <Label htmlFor="state">State *</Label>
               <Input
@@ -341,9 +340,13 @@ const LeadForm = () => {
                 value={formData.state}
                 onChange={handleChange}
                 placeholder="State"
+                autoComplete="address-level1"
                 required
               />
             </div>
+          </div>
+          <div className="text-xs text-neutral-500 mt-2">
+            Please provide complete and accurate address details for better lead management.
           </div>
         </div>
         

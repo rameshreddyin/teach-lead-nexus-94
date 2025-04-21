@@ -2,6 +2,9 @@
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 
+/**
+ * FloatingActionButton props
+ */
 interface FloatingActionButtonProps {
   onClick: () => void;
   className?: string;
@@ -18,14 +21,17 @@ export function FloatingActionButton({
       onClick={onClick}
       className={cn(
         "fab",
-        "fixed bottom-20 right-6 rounded-full bg-app-black text-app-white shadow-lg",
+        // Always stick to proper bottom-right with big enough gap for bottom navs
+        "fixed right-6 bottom-6 md:right-10 md:bottom-8",
+        "rounded-full bg-app-black text-app-white shadow-lg",
         "w-14 h-14 flex items-center justify-center text-2xl",
         "transition-all hover:scale-105 active:scale-95",
-        "z-50", // Ensure it's always on top
+        "z-[999]",  // extra high z-index
         className
       )}
+      aria-label="Add"
     >
-      {children || <Plus className="w-6 h-6" />}
+      {children || <Plus className="w-7 h-7" />}
     </button>
   );
 }
