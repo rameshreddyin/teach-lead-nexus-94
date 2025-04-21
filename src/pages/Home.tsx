@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/authContext';
 import { getUserLeads, getFollowUpLeads } from '@/lib/leadService';
@@ -9,93 +10,70 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 
 const Home = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [followUpLeads, setFollowUpLeads] = useState<Lead[]>([]);
-  const [filteredLeads, setFilteredLeads] = useState<Lead[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<LeadStatus | 'all'>('all');
   const [sourceFilter, setSourceFilter] = useState<LeadSource | 'all'>('all');
-  const [isLoading, setIsLoading] = useState(true);
 
   console.log('Home component rendered, user:', user);
+  
+  // Use React Query for data fetching with proper caching
+  const { data: leads = [], isLoading: leadsLoading } = useQuery({
+    queryKey: ['leads', user?.id],
+    queryFn: () => getUserLeads(user?.id || ''),
+    staleTime: 60000, // 1 minute
+    enabled: !!user,
+  });
+  
+  // Get today's follow-ups using React Query
+  const { data: followUpLeads = [] } = useQuery({
+    queryKey: ['followUpLeads', user?.id],
+    queryFn: () => getFollowUpLeads(user?.id || ''),
+    staleTime: 60000, // 1 minute
+    enabled: !!user,
+  });
 
-  // Load leads on component mount and when user changes
-  useEffect(() => {
-    console.log('useEffect triggered, loading leads');
-    loadLeads();
-  }, []);
-
-  // Load leads from the service
-  const loadLeads = () => {
-    console.log('loadLeads function called');
-    setIsLoading(true);
+  // Apply filters using memoization to prevent unnecessary re-calculations
+  const filteredLeads = useMemo(() => {
+    console.log('Filtering leads...');
+    let filtered = [...leads];
     
-    // Get all leads, using a default user ID if no user is logged in
-    const userId = user?.id || '';
-    console.log('Using user ID:', userId || 'default');
-    
-    const allLeads = getUserLeads(userId);
-    console.log('Loaded leads:', allLeads.length);
-    setLeads(allLeads);
-    
-    // Get today's follow-up leads
-    const todayFollowUps = getFollowUpLeads(userId);
-    console.log('Today\'s follow-ups:', todayFollowUps.length);
-    setFollowUpLeads(todayFollowUps);
-    
-    // Initialize filtered leads
-    setFilteredLeads(allLeads);
-    
-    setIsLoading(false);
-  };
-
-  // Apply filters when they change
-  useEffect(() => {
-    console.log('Filters changed, applying filters');
-    if (leads.length > 0) {
-      let filtered = [...leads];
-      console.log('Starting with', filtered.length, 'leads');
-      
-      // Apply status filter
-      if (statusFilter && statusFilter !== 'all') {
-        filtered = filtered.filter(lead => lead.status === statusFilter);
-        console.log('After status filter:', filtered.length, 'leads');
-      }
-      
-      // Apply source filter
-      if (sourceFilter && sourceFilter !== 'all') {
-        filtered = filtered.filter(lead => lead.source === sourceFilter);
-        console.log('After source filter:', filtered.length, 'leads');
-      }
-      
-      // Apply search query
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        filtered = filtered.filter(
-          lead => 
-            lead.studentName.toLowerCase().includes(query) || 
-            lead.parentName.toLowerCase().includes(query)
-        );
-        console.log('After search filter:', filtered.length, 'leads');
-      }
-      
-      setFilteredLeads(filtered);
+    // Apply status filter
+    if (statusFilter && statusFilter !== 'all') {
+      filtered = filtered.filter(lead => lead.status === statusFilter);
     }
+    
+    // Apply source filter
+    if (sourceFilter && sourceFilter !== 'all') {
+      filtered = filtered.filter(lead => lead.source === sourceFilter);
+    }
+    
+    // Apply search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        lead => 
+          lead.studentName.toLowerCase().includes(query) || 
+          lead.parentName.toLowerCase().includes(query)
+      );
+    }
+    
+    return filtered;
   }, [leads, statusFilter, sourceFilter, searchQuery]);
 
-  // Handle lead card click
-  const handleLeadClick = (lead: Lead) => {
+  // Handle lead card click using useCallback to prevent recreation on each render
+  const handleLeadClick = React.useCallback((lead: Lead) => {
     navigate(`/lead/${lead.id}`);
-  };
+  }, [navigate]);
 
   // Handle add new lead
-  const handleAddLead = () => {
+  const handleAddLead = React.useCallback(() => {
     navigate('/add-lead');
-  };
+  }, [navigate]);
 
   return (
     <div className="px-4 py-3 pb-20">
@@ -165,7 +143,7 @@ const Home = () => {
           </div>
           
           {/* Lead list */}
-          {isLoading ? (
+          {leadsLoading ? (
             <div className="flex justify-center my-8">
               <div className="animate-pulse text-app-mediumGray">Loading leads...</div>
             </div>

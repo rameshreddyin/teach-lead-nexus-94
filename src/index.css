@@ -1,8 +1,19 @@
+
+/* Base Tailwind directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Preload critical fonts with font-display: swap to improve FCP */
 @layer base {
+  @font-face {
+    font-family: 'SystemFont';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Arial');
+  }
+  
   :root {
     /* Clean minimalist theme with black, white and gray */
     --background: 0 0% 100%;
@@ -34,6 +45,7 @@
     --ring: 0 0% 13%;
 
     --radius: 0.75rem;
+    --font-sans: SystemFont, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   }
 
   * {
@@ -45,6 +57,8 @@
     -webkit-tap-highlight-color: transparent;
     height: 100%;
     overflow-x: hidden;
+    text-rendering: optimizeSpeed;
+    scroll-behavior: smooth;
   }
 
   body {
@@ -56,6 +70,7 @@
     @apply min-h-screen max-w-md mx-auto relative;
     display: flex;
     flex-direction: column;
+    contain: content;
   }
 
   a, button {
@@ -67,12 +82,14 @@
     @apply flex flex-col;
     min-height: 100svh;
     width: 100%;
+    contain: paint;
   }
 
   .main-content {
     @apply flex-1 relative;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    will-change: scroll-position;
   }
 
   /* Status Tags */
@@ -104,6 +121,7 @@
     @apply fixed bottom-6 right-6 rounded-full bg-app-black text-app-white shadow-lg z-10
           w-14 h-14 flex items-center justify-center text-2xl;
     transition: transform 0.2s, box-shadow 0.2s;
+    contain: content;
   }
   
   .fab:active {
@@ -114,6 +132,7 @@
   .swipe-action {
     @apply absolute inset-y-0 flex items-center justify-center px-4;
     transition: opacity 0.2s;
+    contain: content;
   }
   
   .swipe-left {
@@ -122,5 +141,28 @@
   
   .swipe-right {
     @apply right-0 bg-app-pending text-app-black;
+  }
+
+  /* Optimize images for WebP support */
+  img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    content-visibility: auto;
+  }
+
+  /* Use passive:true pattern for common handlers */
+  .touch-scroll {
+    touch-action: pan-y;
+  }
+}
+
+/* Critical render path optimization for animations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

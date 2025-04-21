@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,16 +12,16 @@ interface LeadCardProps {
   onStatusChange?: (lead: Lead, newStatus: string) => void;
 }
 
-export const LeadCard: React.FC<LeadCardProps> = ({ lead, onClick }) => {
+export const LeadCard: React.FC<LeadCardProps> = memo(({ lead, onClick }) => {
   const formattedDate = formatDistanceToNow(new Date(lead.createdAt), {
     addSuffix: true,
   });
 
   const followUpDate = new Date(lead.followUpDate).toLocaleDateString();
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     onClick(lead);
-  };
+  }, [lead, onClick]);
 
   return (
     <Card 
@@ -68,4 +68,6 @@ export const LeadCard: React.FC<LeadCardProps> = ({ lead, onClick }) => {
       </CardContent>
     </Card>
   );
-};
+});
+
+LeadCard.displayName = 'LeadCard';

@@ -1,4 +1,5 @@
 
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,18 +8,20 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/lib/authContext";
 import AppLayout from "@/components/layout/AppLayout";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import LeadForm from "./pages/LeadForm";
-import LeadDetail from "./pages/LeadDetail";
-import Profile from "./pages/Profile";
-import EditProfile from "./pages/profile/EditProfile";
-import NotificationSettings from "./pages/profile/NotificationSettings";
-import ChangePassword from "./pages/profile/ChangePassword";
-import HelpSupport from "./pages/profile/HelpSupport";
-import TermsOfService from "./pages/profile/TermsOfService";
-import PrivacyPolicy from "./pages/profile/PrivacyPolicy";
-import NotFound from "./pages/NotFound";
+
+// Lazy-loaded components
+const Home = lazy(() => import("./pages/Home"));
+const Login = lazy(() => import("./pages/Login"));
+const LeadForm = lazy(() => import("./pages/LeadForm"));
+const LeadDetail = lazy(() => import("./pages/LeadDetail"));
+const Profile = lazy(() => import("./pages/Profile"));
+const EditProfile = lazy(() => import("./pages/profile/EditProfile"));
+const NotificationSettings = lazy(() => import("./pages/profile/NotificationSettings"));
+const ChangePassword = lazy(() => import("./pages/profile/ChangePassword"));
+const HelpSupport = lazy(() => import("./pages/profile/HelpSupport"));
+const TermsOfService = lazy(() => import("./pages/profile/TermsOfService"));
+const PrivacyPolicy = lazy(() => import("./pages/profile/PrivacyPolicy"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Define a Content Security Policy
 // In a real app, this would be in server headers
@@ -30,7 +33,24 @@ if (typeof window !== 'undefined') {
   document.head.appendChild(cspMeta);
 }
 
-const queryClient = new QueryClient();
+// Create a queryClient with optimized settings
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60000, // 1 minute
+      cacheTime: 5 * 60 * 1000, // 5 minutes
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-app-black"></div>
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -39,35 +59,37 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            
-            {/* Protected routes with role-based access */}
-            <Route element={<ProtectedRoute />}>
-              <Route element={<AppLayout />}>
-                <Route path="/" element={<Home />} />
-                
-                {/* Lead management routes - only for teachers and admins */}
-                <Route element={<ProtectedRoute allowedRoles={['teacher', 'admin']} />}>
-                  <Route path="/add-lead" element={<LeadForm />} />
-                  <Route path="/edit-lead/:id" element={<LeadForm />} />
-                  <Route path="/lead/:id" element={<LeadDetail />} />
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              
+              {/* Protected routes with role-based access */}
+              <Route element={<ProtectedRoute />}>
+                <Route element={<AppLayout />}>
+                  <Route path="/" element={<Home />} />
+                  
+                  {/* Lead management routes - only for teachers and admins */}
+                  <Route element={<ProtectedRoute allowedRoles={['teacher', 'admin']} />}>
+                    <Route path="/add-lead" element={<LeadForm />} />
+                    <Route path="/edit-lead/:id" element={<LeadForm />} />
+                    <Route path="/lead/:id" element={<LeadDetail />} />
+                  </Route>
+                  
+                  {/* Profile routes - available to all authenticated users */}
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile/edit" element={<EditProfile />} />
+                  <Route path="/profile/notifications" element={<NotificationSettings />} />
+                  <Route path="/profile/change-password" element={<ChangePassword />} />
+                  <Route path="/profile/help" element={<HelpSupport />} />
+                  <Route path="/profile/terms" element={<TermsOfService />} />
+                  <Route path="/profile/privacy" element={<PrivacyPolicy />} />
                 </Route>
-                
-                {/* Profile routes - available to all authenticated users */}
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/profile/edit" element={<EditProfile />} />
-                <Route path="/profile/notifications" element={<NotificationSettings />} />
-                <Route path="/profile/change-password" element={<ChangePassword />} />
-                <Route path="/profile/help" element={<HelpSupport />} />
-                <Route path="/profile/terms" element={<TermsOfService />} />
-                <Route path="/profile/privacy" element={<PrivacyPolicy />} />
               </Route>
-            </Route>
-            
-            {/* Catch-all route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+              
+              {/* Catch-all route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
