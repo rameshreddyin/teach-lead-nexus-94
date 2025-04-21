@@ -18,9 +18,10 @@ export function FloatingActionButton({
       onClick={onClick}
       className={cn(
         "fab",
-        "fixed bottom-6 right-6 rounded-full bg-app-black text-app-white shadow-lg z-10",
+        "fixed bottom-20 right-6 rounded-full bg-app-black text-app-white shadow-lg",
         "w-14 h-14 flex items-center justify-center text-2xl",
         "transition-all hover:scale-105 active:scale-95",
+        "z-50", // Ensure it's always on top
         className
       )}
     >

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useAuth } from '@/lib/authContext';
@@ -12,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { SuccessConfirmation } from '@/components/lead/SuccessConfirmation';
+import { MapPin } from 'lucide-react';
 
 const LeadForm = () => {
   const { user } = useAuth();
@@ -22,28 +22,35 @@ const LeadForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [formData, setFormData] = useState<LeadFormData>({
+  const [formData, setFormData] = useState<LeadFormData & {
+    pincode?: string;
+    locality?: string;
+    city?: string;
+    state?: string;
+  }>({
     studentName: '',
     parentName: '',
     contactNumber: '',
     contactEmail: '',
     class: '',
     street: '',
+    locality: '',
+    city: '',
+    state: '',
+    pincode: '',
     source: 'parent_referral',
     followUpDate: format(new Date(), 'yyyy-MM-dd'),
     notes: '',
   });
 
-  // Check if we're editing
   const isEditing = location.pathname.includes('/edit-lead');
 
-  // Load lead data if editing
   useEffect(() => {
     if (isEditing && id) {
       const lead = getLead(id);
       if (lead) {
-        // Format date for input element
         const followUpDate = format(new Date(lead.followUpDate), 'yyyy-MM-dd');
+        const addressParts = parseAddressFromStreet(lead.street);
         
         setFormData({
           studentName: lead.studentName,
@@ -51,7 +58,11 @@ const LeadForm = () => {
           contactNumber: lead.contactNumber,
           contactEmail: lead.contactEmail || '',
           class: lead.class,
-          street: lead.street,
+          street: addressParts.street || lead.street,
+          locality: addressParts.locality || '',
+          city: addressParts.city || '',
+          state: addressParts.state || '',
+          pincode: addressParts.pincode || '',
           source: lead.source,
           followUpDate,
           notes: lead.notes,
@@ -60,7 +71,28 @@ const LeadForm = () => {
     }
   }, [id, isEditing]);
 
-  // Handle input changes
+  const parseAddressFromStreet = (streetAddress: string) => {
+    const parts = streetAddress.split(',').map(part => part.trim());
+    return {
+      street: parts[0] || '',
+      locality: parts[1] || '',
+      city: parts[2] || '',
+      state: parts[3] || '',
+      pincode: parts[4] || '',
+    };
+  };
+
+  const combineAddressComponents = () => {
+    const { street, locality, city, state, pincode } = formData;
+    return [
+      street, 
+      locality, 
+      city, 
+      state, 
+      pincode
+    ].filter(Boolean).join(', ');
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -69,7 +101,6 @@ const LeadForm = () => {
     }));
   };
 
-  // Handle select changes
   const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -77,7 +108,6 @@ const LeadForm = () => {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -86,17 +116,26 @@ const LeadForm = () => {
     setIsSubmitting(true);
     
     try {
+      const combinedAddress = combineAddressComponents();
+      
+      const submissionData = {
+        ...formData,
+        street: combinedAddress
+      };
+      
+      delete (submissionData as any).locality;
+      delete (submissionData as any).city;
+      delete (submissionData as any).state;
+      delete (submissionData as any).pincode;
+      
       if (isEditing && id) {
-        // Update existing lead
-        await updateLead(id, formData as Partial<Lead>);
+        await updateLead(id, submissionData as Partial<Lead>);
         setSuccessMessage('Lead Updated Successfully');
       } else {
-        // Create new lead
-        await createLead(formData, user.id);
+        await createLead(submissionData as LeadFormData, user.id);
         setSuccessMessage('Lead Added Successfully');
       }
       
-      // Show success confirmation
       setShowSuccess(true);
     } catch (error) {
       console.error('Lead form error:', error);
@@ -111,7 +150,7 @@ const LeadForm = () => {
   };
 
   return (
-    <div className="px-4 py-4">
+    <div className="px-4 py-4 pb-20">
       {showSuccess && (
         <SuccessConfirmation 
           message={successMessage}
@@ -236,6 +275,76 @@ const LeadForm = () => {
             placeholder="Additional information about this lead"
             rows={4}
           />
+        </div>
+        
+        <div className="mt-8 mb-4">
+          <div className="flex items-center gap-2 mb-3">
+            <MapPin className="h-5 w-5 text-app-black" />
+            <h3 className="text-base font-medium">Location Details</h3>
+          </div>
+          
+          <div className="space-y-3 border border-app-lightGray rounded-md p-3 bg-gray-50">
+            <div className="space-y-2">
+              <Label htmlFor="street">Street Address *</Label>
+              <Input
+                id="street"
+                name="street"
+                value={formData.street}
+                onChange={handleChange}
+                placeholder="House/Flat No., Street Name"
+                required
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="locality">Locality/Area</Label>
+              <Input
+                id="locality"
+                name="locality"
+                value={formData.locality}
+                onChange={handleChange}
+                placeholder="Neighborhood, Area"
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label htmlFor="city">City *</Label>
+                <Input
+                  id="city"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  placeholder="City"
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="pincode">Pin Code *</Label>
+                <Input
+                  id="pincode"
+                  name="pincode"
+                  value={formData.pincode}
+                  onChange={handleChange}
+                  placeholder="Postal Code"
+                  required
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="state">State *</Label>
+              <Input
+                id="state"
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+                placeholder="State"
+                required
+              />
+            </div>
+          </div>
         </div>
         
         <Button 

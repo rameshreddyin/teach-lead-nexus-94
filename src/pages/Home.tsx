@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/authContext';
@@ -24,7 +23,7 @@ const Home = () => {
 
   console.log('Home component rendered, user:', user);
 
-  // Load leads on component mount
+  // Load leads on component mount and when user changes
   useEffect(() => {
     console.log('useEffect triggered, loading leads');
     loadLeads();
@@ -99,7 +98,7 @@ const Home = () => {
   };
 
   return (
-    <div className="px-4 py-3">
+    <div className="px-4 py-3 pb-20">
       {/* Tabs for All Leads and Today's Follow-ups */}
       <Tabs defaultValue="all" className="mb-4">
         <TabsList className="w-full mb-4">
@@ -208,8 +207,11 @@ const Home = () => {
         </TabsContent>
       </Tabs>
       
-      {/* Floating action button */}
-      <FloatingActionButton onClick={handleAddLead} />
+      {/* Floating action button with higher z-index and proper position */}
+      <FloatingActionButton 
+        onClick={handleAddLead} 
+        className="z-50"
+      />
     </div>
   );
 };
