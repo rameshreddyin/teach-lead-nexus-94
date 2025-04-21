@@ -21,12 +21,12 @@ export function FloatingActionButton({
       onClick={onClick}
       className={cn(
         "fab",
-        // Adjusted bottom position to prevent overlap with bottom nav
-        "fixed right-6 bottom-20 md:right-10 md:bottom-8",
-        "rounded-full bg-app-black text-app-white shadow-lg",
+        // Adjusted position to prevent overlap with bottom nav
+        "fixed right-6 bottom-20 md:right-10",
+        "rounded-full bg-app-black text-app-white",
         "w-14 h-14 flex items-center justify-center text-2xl",
         "transition-all hover:scale-105 active:scale-95",
-        "z-[999]",  // extra high z-index
+        "shadow-lg z-[999]", // Higher z-index and better shadow
         className
       )}
       aria-label="Add"

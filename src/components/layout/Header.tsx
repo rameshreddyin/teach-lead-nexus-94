@@ -12,7 +12,7 @@ const Header = () => {
     
     if (path === '/') return 'My Leads';
     if (path === '/add-lead') return 'Add New Lead';
-    if (path === '/edit-lead') return 'Edit Lead';
+    if (path.startsWith('/edit-lead')) return 'Edit Lead';
     if (path === '/profile') return 'My Profile';
     if (path.includes('/lead/')) return 'Lead Details';
     
@@ -29,12 +29,13 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 bg-app-white border-b border-app-lightGray z-10">
-      <div className="flex items-center h-14 px-4">
+    <header className="sticky top-0 bg-app-white border-b border-app-lightGray z-10 shadow-sm">
+      <div className="flex items-center h-16 px-4">
         {showBackButton && (
           <button 
             onClick={handleBack}
-            className="mr-3 p-1 rounded-full hover:bg-app-lightGray"
+            className="mr-3 p-2 rounded-full hover:bg-app-lightGray transition-colors"
+            aria-label="Go back"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -42,6 +43,9 @@ const Header = () => {
         <h1 className="text-lg font-medium flex-1 text-center">
           {getTitle()}
         </h1>
+        <div className="w-10">
+          {/* Empty div for balance */}
+        </div>
       </div>
     </header>
   );

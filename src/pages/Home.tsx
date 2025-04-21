@@ -18,8 +18,6 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<LeadStatus | 'all'>('all');
   const [sourceFilter, setSourceFilter] = useState<LeadSource | 'all'>('all');
-
-  console.log('Home component rendered, user:', user);
   
   // Use React Query for data fetching with proper caching
   const { data: leads = [], isLoading: leadsLoading } = useQuery({
@@ -39,7 +37,6 @@ const Home = () => {
 
   // Apply filters using memoization to prevent unnecessary re-calculations
   const filteredLeads = useMemo(() => {
-    console.log('Filtering leads...');
     let filtered = [...leads];
     
     // Apply status filter
@@ -65,7 +62,7 @@ const Home = () => {
     return filtered;
   }, [leads, statusFilter, sourceFilter, searchQuery]);
 
-  // Handle lead card click using useCallback to prevent recreation on each render
+  // Handle lead card click
   const handleLeadClick = React.useCallback((lead: Lead) => {
     navigate(`/lead/${lead.id}`);
   }, [navigate]);
@@ -76,12 +73,12 @@ const Home = () => {
   }, [navigate]);
 
   return (
-    <div className="px-4 py-3 mb-2"> {/* Removed explicit bottom padding as it's handled by the AppLayout */}
+    <div className="px-4 py-3 fade-in">
       {/* Tabs for All Leads and Today's Follow-ups */}
       <Tabs defaultValue="all" className="mb-4">
         <TabsList className="w-full mb-4">
-          <TabsTrigger value="all" className="flex-1">All Leads</TabsTrigger>
-          <TabsTrigger value="followup" className="flex-1">
+          <TabsTrigger value="all" className="flex-1 h-10 text-base">All Leads</TabsTrigger>
+          <TabsTrigger value="followup" className="flex-1 h-10 text-base">
             Today's Follow-ups
             {followUpLeads.length > 0 && (
               <span className="ml-2 bg-app-black text-app-white px-2 py-0.5 rounded-full text-xs">
@@ -91,16 +88,16 @@ const Home = () => {
           </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="all">
+        <TabsContent value="all" className="slide-in-up">
           {/* Search and filters */}
-          <div className="mb-4 space-y-3">
+          <div className="mb-5 space-y-3">
             <div className="relative">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-app-mediumGray" />
+              <Search className="absolute left-3 top-3 h-4 w-4 text-app-mediumGray" />
               <Input
                 placeholder="Search leads..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className="pl-10 h-12"
               />
             </div>
             
@@ -109,7 +106,7 @@ const Home = () => {
                 value={statusFilter} 
                 onValueChange={(value) => setStatusFilter(value as LeadStatus | 'all')}
               >
-                <SelectTrigger className="flex-1">
+                <SelectTrigger className="flex-1 h-12">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -126,7 +123,7 @@ const Home = () => {
                 value={sourceFilter} 
                 onValueChange={(value) => setSourceFilter(value as LeadSource | 'all')}
               >
-                <SelectTrigger className="flex-1">
+                <SelectTrigger className="flex-1 h-12">
                   <SelectValue placeholder="Source" />
                 </SelectTrigger>
                 <SelectContent>
@@ -142,13 +139,15 @@ const Home = () => {
             </div>
           </div>
           
-          {/* Lead list */}
+          {/* Lead list with improved loading state */}
           {leadsLoading ? (
-            <div className="flex justify-center my-8">
-              <div className="animate-pulse text-app-mediumGray">Loading leads...</div>
+            <div className="flex flex-col gap-3 my-8">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="animate-pulse bg-app-white rounded-lg p-4 h-24"></div>
+              ))}
             </div>
           ) : filteredLeads.length > 0 ? (
-            <div>
+            <div className="space-y-3">
               {filteredLeads.map((lead) => (
                 <LeadCard 
                   key={lead.id} 
@@ -158,16 +157,16 @@ const Home = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-app-mediumGray">
-              <p>No leads found</p>
+            <div className="text-center py-12 text-app-mediumGray bg-app-white rounded-lg shadow-sm">
+              <p className="text-lg font-medium">No leads found</p>
               <p className="text-sm mt-2">Add your first lead to get started</p>
             </div>
           )}
         </TabsContent>
         
-        <TabsContent value="followup">
+        <TabsContent value="followup" className="slide-in-up">
           {followUpLeads.length > 0 ? (
-            <div>
+            <div className="space-y-3">
               {followUpLeads.map((lead) => (
                 <LeadCard 
                   key={lead.id} 
@@ -177,18 +176,17 @@ const Home = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-app-mediumGray">
-              <p>No follow-ups for today</p>
+            <div className="text-center py-12 text-app-mediumGray bg-app-white rounded-lg shadow-sm">
+              <p className="text-lg font-medium">No follow-ups for today</p>
               <p className="text-sm mt-2">All caught up! 🎉</p>
             </div>
           )}
         </TabsContent>
       </Tabs>
       
-      {/* Floating action button with higher z-index and proper position */}
+      {/* Floating action button */}
       <FloatingActionButton 
         onClick={handleAddLead} 
-        className="z-50"
       />
     </div>
   );

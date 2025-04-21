@@ -12,36 +12,36 @@ const BottomNav = () => {
   };
   
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-app-white border-t border-app-lightGray z-50 shadow-sm">
-      <div className="flex items-center justify-around h-16">
+    <nav className="fixed bottom-0 left-0 right-0 bg-app-white border-t border-app-lightGray z-50 shadow-lg">
+      <div className="flex items-center justify-around h-16 max-w-md mx-auto">
         <button
           onClick={() => navigate('/')}
-          className={`flex flex-col items-center justify-center w-1/3 py-1 ${
+          className={`flex flex-col items-center justify-center w-1/3 py-2 transition-colors ${
             location.pathname === '/' ? 'text-app-black' : 'text-app-mediumGray'
           }`}
         >
           <HomeIcon className="h-5 w-5 mb-1" />
-          <span className="text-xs">Home</span>
+          <span className="text-xs font-medium">Home</span>
         </button>
         
         <button
           onClick={() => navigate('/add-lead')}
-          className={`flex flex-col items-center justify-center w-1/3 py-1 ${
+          className={`flex flex-col items-center justify-center w-1/3 py-2 transition-colors ${
             location.pathname === '/add-lead' ? 'text-app-black' : 'text-app-mediumGray'
           }`}
         >
           <PlusSquare className="h-5 w-5 mb-1" />
-          <span className="text-xs">Add Lead</span>
+          <span className="text-xs font-medium">Add Lead</span>
         </button>
         
         <button
           onClick={() => navigate('/profile')}
-          className={`flex flex-col items-center justify-center w-1/3 py-1 ${
+          className={`flex flex-col items-center justify-center w-1/3 py-2 transition-colors ${
             isProfileRoute() ? 'text-app-black' : 'text-app-mediumGray'
           }`}
         >
           <User className="h-5 w-5 mb-1" />
-          <span className="text-xs">Profile</span>
+          <span className="text-xs font-medium">Profile</span>
         </button>
       </div>
     </nav>

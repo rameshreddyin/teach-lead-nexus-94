@@ -90,7 +90,32 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     will-change: scroll-position;
-    padding-bottom: 4rem !important; /* Ensure consistent bottom padding for all screens */
+    padding-bottom: 5rem !important; /* Increased to ensure content doesn't overlap with bottom nav */
+  }
+
+  /* Enhanced touch target sizes */
+  button, 
+  .button, 
+  a.button, 
+  input[type="button"], 
+  input[type="submit"] {
+    @apply min-h-10 min-w-10;
+  }
+
+  /* Improved form element styling */
+  input, select, textarea {
+    @apply text-base py-3;
+  }
+
+  /* Transition animations for interactive elements */
+  a, button, .card, .interactive-element {
+    @apply transition-all duration-200;
+  }
+
+  /* Pressed state for buttons */
+  button:active, 
+  .button:active {
+    @apply transform scale-95;
   }
 
   /* Status Tags */
@@ -152,9 +177,52 @@
     content-visibility: auto;
   }
 
+  /* Animation classes */
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .slide-in-up {
+    animation: slideInUp 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInUp {
+    from {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
   /* Use passive:true pattern for common handlers */
   .touch-scroll {
     touch-action: pan-y;
+  }
+
+  /* Drop shadow for floating elements like cards */
+  .card-shadow {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Better card transitions */
+  .card {
+    @apply transition-all duration-200;
+  }
+  
+  .card:active {
+    @apply transform scale-[0.995];
   }
 }
 
