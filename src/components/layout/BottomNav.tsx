@@ -12,7 +12,7 @@ const BottomNav = () => {
   };
   
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-app-white border-t border-app-lightGray z-10">
+    <nav className="fixed bottom-0 left-0 right-0 bg-app-white border-t border-app-lightGray z-50 shadow-sm">
       <div className="flex items-center justify-around h-16">
         <button
           onClick={() => navigate('/')}

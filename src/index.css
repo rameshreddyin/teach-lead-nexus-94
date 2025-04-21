@@ -90,6 +90,7 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     will-change: scroll-position;
+    padding-bottom: 4rem !important; /* Ensure consistent bottom padding for all screens */
   }
 
   /* Status Tags */
@@ -118,7 +119,7 @@
 
   /* Custom Fab */
   .fab {
-    @apply fixed bottom-6 right-6 rounded-full bg-app-black text-app-white shadow-lg z-10
+    @apply fixed bottom-20 right-6 rounded-full bg-app-black text-app-white shadow-lg z-40
           w-14 h-14 flex items-center justify-center text-2xl;
     transition: transform 0.2s, box-shadow 0.2s;
     contain: content;
