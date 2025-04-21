@@ -25,7 +25,9 @@ const reportWebVitals = () => {
     new PerformanceObserver((entries) => {
       const firstInput = entries.getEntries()[0];
       if (firstInput) {
-        console.log(`FID: ${firstInput.processingStart - firstInput.startTime}ms`);
+        // Use type assertion to handle processingStart property
+        const inputDelay = (firstInput as any).processingStart - firstInput.startTime;
+        console.log(`FID: ${inputDelay}ms`);
       }
     }).observe({type: 'first-input', buffered: true});
   }
