@@ -26,7 +26,7 @@ const AppLayout = () => {
   return (
     <div className="app-container bg-app-lightGray">
       <Header />
-      <main className="main-content pb-16"> {/* Add bottom padding for the navbar */}
+      <main className="main-content pb-20"> {/* Increase bottom padding to prevent content from being hidden under the nav */}
         <Outlet />
       </main>
       <BottomNav />

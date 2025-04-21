@@ -76,7 +76,7 @@ const Home = () => {
   }, [navigate]);
 
   return (
-    <div className="px-4 py-3 pb-20">
+    <div className="px-4 py-3 pb-16"> {/* Reduced bottom padding from pb-20 to pb-16 */}
       {/* Tabs for All Leads and Today's Follow-ups */}
       <Tabs defaultValue="all" className="mb-4">
         <TabsList className="w-full mb-4">
