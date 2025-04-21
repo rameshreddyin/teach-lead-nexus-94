@@ -2,7 +2,7 @@
 // Types for the Lead Management System
 
 // Lead source options
-export type LeadSource = 'parent_referral' | 'school_event' | 'website' | 'social_media' | 'community' | 'other';
+export type LeadSource = 'teacher_referral' | 'parent_referral' | 'school_event' | 'website' | 'social_media' | 'community' | 'other';
 
 // Lead status options
 export type LeadStatus = 'new' | 'contacted' | 'follow_up' | 'converted' | 'closed';
@@ -52,6 +52,7 @@ export const getStatusText = (status: LeadStatus): string => {
 // Get human-readable source
 export const getSourceText = (source: LeadSource): string => {
   const sourceMap: Record<LeadSource, string> = {
+    teacher_referral: 'Teacher Referral',
     parent_referral: 'Parent Referral',
     school_event: 'School Event',
     website: 'Website',
